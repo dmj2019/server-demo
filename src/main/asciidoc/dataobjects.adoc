@@ -1,0 +1,19 @@
+= Cheatsheets
+
+[[User]]
+== User
+
+++++
+++++
+'''
+
+[cols=">25%,25%,50%"]
+[frame="topbot"]
+|===
+^|Name | Type ^| Description
+|[[id]]`@id`|`Number (long)`|+++
+不要使用任何lombok方法生成get/set方法
++++
+|[[name]]`@name`|`String`|-
+|===
+
