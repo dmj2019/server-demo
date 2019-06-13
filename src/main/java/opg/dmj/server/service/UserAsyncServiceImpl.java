@@ -35,4 +35,18 @@ public class UserAsyncServiceImpl implements UserAsyncService {
         JsonObject retJson = ResultJsonObject.createJsonResult(users, HttpResponseStatus.OK.code(), "");
         Future.succeededFuture(retJson).setHandler(resultHandler);
     }
+
+    @Override
+    public void get(Long id, Handler<AsyncResult<JsonObject>> resultHandler) {
+        User user = userService.get(id);
+        JsonObject retJson = ResultJsonObject.createJsonResult(user, HttpResponseStatus.OK.code(), "");
+        Future.succeededFuture(retJson).setHandler(resultHandler);
+    }
+
+    @Override
+    public void delete(Long id, Handler<AsyncResult<JsonObject>> resultHandler) {
+        userService.delete(id);
+        JsonObject retJson = ResultJsonObject.createJsonResult(HttpResponseStatus.OK.code(), "Delete Succeed");
+        Future.succeededFuture(retJson).setHandler(resultHandler);
+    }
 }

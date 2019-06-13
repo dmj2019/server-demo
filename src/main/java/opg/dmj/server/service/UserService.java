@@ -29,4 +29,12 @@ public class UserService {
         Iterable<User> iterable = userRepository.findAll();
         return StreamSupport.stream(iterable.spliterator(), false).collect(Collectors.toList());
     }
+
+    public User get(Long id) {
+        return userRepository.findById(id).get();
+    }
+
+    public void delete(Long id) {
+        userRepository.deleteById(id);
+    }
 }

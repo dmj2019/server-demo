@@ -2,6 +2,7 @@ package opg.dmj.server.handler;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.vertx.core.Vertx;
+import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
@@ -29,6 +30,8 @@ public class UserHandler {
                 .produces("application/json");
         router.post("/").handler(this::save);
         router.get("/").handler(this::list);
+        router.get("/:id").handler(this::get);
+        router.delete("/:id").handler(this::delete);
         return router;
     }
 
@@ -37,7 +40,7 @@ public class UserHandler {
         userAsyncService.save(reqParam, ar -> {
             if (ar.succeeded()) {
                 JsonObject result = ar.result();
-                routingContext.response().setStatusCode(HttpResponseStatus.OK.code()).end(result.encodePrettily());
+                routingContext.response().setStatusCode(result.getInteger("statusCode")).end(result.encodePrettily());
             } else {
                 routingContext.fail(ar.cause());
             }
@@ -48,10 +51,35 @@ public class UserHandler {
         userAsyncService.list(ar -> {
             if (ar.succeeded()) {
                 JsonObject result = ar.result();
-                routingContext.response().setStatusCode(HttpResponseStatus.OK.code()).end(result.encodePrettily());
+                routingContext.response().setStatusCode(result.getInteger("statusCode")).end(result.encodePrettily());
             } else {
                 routingContext.fail(ar.cause());
             }
         });
     }
+
+    public void get(RoutingContext routingContext) {
+        Long id = Long.parseLong(routingContext.request().getParam("id"));
+        userAsyncService.get(id, ar -> {
+            if (ar.succeeded()) {
+                JsonObject result = ar.result();
+                routingContext.response().setStatusCode(result.getInteger("statusCode")).end(result.encodePrettily());
+            } else {
+                routingContext.fail(ar.cause());
+            }
+        });
+    }
+
+    public void delete(RoutingContext routingContext) {
+        Long id = Long.parseLong(routingContext.request().getParam("id"));
+        userAsyncService.delete(id, ar -> {
+            if (ar.succeeded()) {
+                JsonObject result = ar.result();
+                routingContext.response().setStatusCode(result.getInteger("statusCode")).end(result.encodePrettily());
+            } else {
+                routingContext.fail(ar.cause());
+            }
+        });
+    }
+
 }
