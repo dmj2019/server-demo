@@ -21,20 +21,20 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User save(User user) {
+    User save(User user) {
         return userRepository.save(user);
     }
 
-    public List<User> list() {
+    List<User> list() {
         Iterable<User> iterable = userRepository.findAll();
         return StreamSupport.stream(iterable.spliterator(), false).collect(Collectors.toList());
     }
 
-    public User get(Long id) {
+    User get(Long id) {
         return userRepository.findById(id).get();
     }
 
-    public void delete(Long id) {
+    void delete(Long id) {
         userRepository.deleteById(id);
     }
 }
