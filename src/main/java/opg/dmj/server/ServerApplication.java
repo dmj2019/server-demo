@@ -3,9 +3,10 @@ package opg.dmj.server;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
+import opg.dmj.server.vertx.OccupationVerticle;
 import opg.dmj.server.vertx.SpringVertxFactory;
-import opg.dmj.server.vertx.VertxFacade;
-import opg.dmj.server.vertx.WorkerVerticle;
+import opg.dmj.server.handler.VertxFacade;
+import opg.dmj.server.vertx.UserVerticle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -66,8 +67,18 @@ public class ServerApplication {
         });
 
         DeploymentOptions workerDeployOpt = new DeploymentOptions().setWorker(true).setInstances(springWorkerInstances);
-        String vertxWorker = springVertxFactory.prefix() + ":" + WorkerVerticle.class.getName();
+        String vertxWorker = springVertxFactory.prefix() + ":" + UserVerticle.class.getName();
 
+        vertx.deployVerticle(vertxWorker, workerDeployOpt, res -> {
+            if (res.succeeded()) {
+                deployLatch.countDown();
+            } else {
+                failed.compareAndSet(false, true);
+            }
+            deployLatch.countDown();
+        });
+
+        vertxWorker = springVertxFactory.prefix() + ":" + OccupationVerticle.class.getName();
         vertx.deployVerticle(vertxWorker, workerDeployOpt, res -> {
             if (res.succeeded()) {
                 deployLatch.countDown();

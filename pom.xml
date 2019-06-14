@@ -42,6 +42,11 @@
             <version>${vertx-version}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-service-factory</artifactId>
+            <version>${vertx-version}</version>
+        </dependency>
         <!-- MySql Driver -->
         <dependency>
             <groupId>mysql</groupId>
@@ -69,11 +74,6 @@
             <scope>test</scope>
         </dependency>
         <!-- Helper -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.58</version>
-        </dependency>
         <!-- todo:为什么JsonObject的转换要用Gson，Vertx自带的Json转换会出现问题? -->
         <dependency>
             <groupId>com.google.code.gson</groupId>

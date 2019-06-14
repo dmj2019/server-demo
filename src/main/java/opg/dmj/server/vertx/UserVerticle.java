@@ -17,7 +17,7 @@ import static org.springframework.beans.factory.config.ConfigurableBeanFactory.S
  */
 @Component
 @Scope(SCOPE_PROTOTYPE)
-public class WorkerVerticle extends AbstractVerticle {
+public class UserVerticle extends AbstractVerticle {
 
     @Autowired
     UserAsyncService userAsyncService;
